@@ -1,16 +1,7 @@
 @echo off
 
-REM Save the current directory
-set "current_dir=%CD%"
-
 REM Change to the location of Python executable
-cd /d F:\RVC\VachanaTTS\venv\Scripts
-
-REM Activate the Python environment
-call activate
-
-REM Change to the location of the Python script
-cd /d F:\RVC\VachanaTTS
+call venv\Scripts\activate
 
 REM Run the Python script
 python app.py
