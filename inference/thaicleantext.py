@@ -146,10 +146,10 @@ def clean_thai_text(text):
         return word + word
 
     # Replace "ๆ" with duplicated word
-    text = re.sub(r'(\S+)ๆ', duplicate_word, text)
+    text = re.sub(r'(\S+?)ๆ', duplicate_word, text)
 
     # Tokenize the text
-    words = word_tokenize(text, keep_whitespace=False)
+    words = word_tokenize(text, keep_whitespace=True)
 
     # Convert English words to Thai phonemes
     cleaned_text = []
@@ -166,4 +166,4 @@ def clean_thai_text(text):
         else:
             cleaned_text.append(word)
 
-    return ' '.join(cleaned_text)
+    return ''.join(cleaned_text)
