@@ -1,10 +1,11 @@
 import os
 import torch
-from transformers import VitsTokenizer, VitsModel, set_seed
+from transformers import VitsModel, VitsTokenizer
 from openvoice import se_extractor
 from openvoice.api import ToneColorConverter
 import scipy
 from pathlib import Path
+from pythainlp import word_tokenize
 import numpy as np
 
 device = torch.device("cuda" if torch.cuda.is_available() else "cpu")
@@ -18,6 +19,10 @@ def get_model_names(model_dir):
     model_paths = Path(model_dir).glob('*')
     return [model_path.name for model_path in model_paths if model_path.is_dir()]
 
+def preprocess_thai_string(input_string: str):
+    string_token = word_tokenize(input_string)
+    return ''.join(string_token)
+
 def load_vits_model(model_name, model_dir):
     if model_name not in models:
         model_path = os.path.join(model_dir, model_name)
@@ -25,23 +30,30 @@ def load_vits_model(model_name, model_dir):
         tokenizers[model_name] = VitsTokenizer.from_pretrained(model_path)
     return models[model_name], tokenizers[model_name]
 
-def generate_speech(text, model_dir, model_name, speaking_rate=1.0, noise_scale=0.8):
+def generate_speech(text, model_dir, model_name, speaking_rate=1.0):
     model, tokenizer = load_vits_model(model_name, model_dir)
-    inputs = tokenizer(text, return_tensors="pt")
+    processed_string = preprocess_thai_string(text)
+    inputs = tokenizer(processed_string, return_tensors="pt")
     
+    # Move inputs to device
     inputs = {k: v.to(device) for k, v in inputs.items()}
     
-    set_seed(456)
+    #set_seed(456)
     
+    # Set model parameters
     model.speaking_rate = speaking_rate
-    #model.noise_scale = noise_scale
     
     with torch.no_grad():
         outputs = model(**inputs)
     
+    # Move output back to CPU for audio processing
     waveform = outputs.waveform[0].cpu().numpy()
     
-    sampling_rate = model.config.sampling_rate if hasattr(model.config, 'sampling_rate') else 48000
+    # Ensure correct sampling rate
+    if hasattr(model.config, 'sampling_rate'):
+        sampling_rate = model.config.sampling_rate
+    else:
+        sampling_rate = 48000
     
     return sampling_rate, waveform
 
@@ -80,7 +92,7 @@ def generate_podcast_script(script, model_dir, model_names, speaking_rate=1.0, n
         if line.strip():
             speaker, text = line.split(':', 1)
             model_name = model_names[int(speaker.strip().split()[-1]) - 1]
-            sr, audio = generate_speech(text.strip(), model_dir, model_name, speaking_rate, noise_scale)
+            sr, audio = generate_speech(text.strip(), model_dir, model_name, speaking_rate)
             audio_segments.append(audio)
     
     combined_audio = np.concatenate(audio_segments)
