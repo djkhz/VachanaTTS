@@ -2,9 +2,8 @@ import os
 import torch
 from openvoice import se_extractor
 from openvoice.api import ToneColorConverter
-from transformers import VitsTokenizer, VitsModel, set_seed
+from transformers import pipeline
 import scipy
-from scipy.signal import resample
 from pathlib import Path
 import srt
 import moviepy.editor as mp
@@ -14,38 +13,24 @@ device = torch.device("cuda" if torch.cuda.is_available() else "cpu")
 output_dir = './outputs'
 os.makedirs(output_dir, exist_ok=True)
 
-models = {}
-tokenizers = {}
-
 def get_model_names(model_dir):
     model_paths = Path(model_dir).glob('*')
     return [model_path.name for model_path in model_paths if model_path.is_dir()]
 
-def load_vits_model(model_name, model_dir):
-    if model_name not in models:
-        model_path = os.path.join(model_dir, model_name)
-        models[model_name] = VitsModel.from_pretrained(model_path).to(device)
-        tokenizers[model_name] = VitsTokenizer.from_pretrained(model_path)
-    return models[model_name], tokenizers[model_name]
-
-def generate_speech(text, model_dir, model_name, noise_scale=0.8):
-    model, tokenizer = load_vits_model(model_name, model_dir)
-    inputs = tokenizer(text, return_tensors="pt")
+def generate_speech(text, model_dir, model_name, speaking_rate=1.0):
+    model_path = os.path.join(model_dir, model_name)
+    synthesiser = pipeline("text-to-speech", model=model_path, device=0 if torch.cuda.is_available() else -1)
+    speech = synthesiser(text)
     
-    inputs = {k: v.to(device) for k, v in inputs.items()}
+    # Resample to 48kHz if needed
+    if speech["sampling_rate"] != 48000:
+        resampled_audio = scipy.signal.resample(speech["audio"][0], int(len(speech["audio"][0]) * 48000 / speech["sampling_rate"]))
+        sampling_rate = 48000
+    else:
+        resampled_audio = speech["audio"][0]
+        sampling_rate = speech["sampling_rate"]
     
-    set_seed(456)
-    
-    #model.noise_scale = noise_scale
-    
-    with torch.no_grad():
-        outputs = model(**inputs)
-    
-    waveform = outputs.waveform[0].cpu().numpy()
-    
-    sampling_rate = model.config.sampling_rate if hasattr(model.config, 'sampling_rate') else 48000
-    
-    return sampling_rate, waveform
+    return sampling_rate, resampled_audio
 
 def save_audio(sampling_rate, audio_data, filename="output.wav"):
     audio_data = np.int16(audio_data / np.max(np.abs(audio_data)) * 32767)
@@ -82,7 +67,7 @@ def process_srt(srt_file):
 
 def generate_speech_from_srt(srt_file, model_paths, total_duration, speaker_refs):
     subtitles = process_srt(srt_file)
-    sampling_rate = 16000
+    sampling_rate = 48000
     
     speaker_audio_files = {}
     speaker_timelines = {}
@@ -103,16 +88,22 @@ def generate_speech_from_srt(srt_file, model_paths, total_duration, speaker_refs
                 speaker_id = 0
             
             if 0 <= speaker_id < len(model_paths[1]):
-                model_path = os.path.join(model_paths[0], model_paths[1][speaker_id])
+                model_name = model_paths[1][speaker_id]
                 
-                _, audio_data = generate_speech(text, model_paths[0], model_paths[1][speaker_id])
+                # Calculate speaking rate to match the timestamped range
+                duration = (sub.end - sub.start).total_seconds()
+                text_length = len(text.split())
+                speaking_rate = text_length / duration
+                
+                _, audio_data = generate_speech(text, model_paths[0], model_name, speaking_rate=speaking_rate)
                 
                 start_sample = int(sub.start.total_seconds() * sampling_rate)
-                end_sample = start_sample + len(audio_data)
+                end_sample = int(sub.end.total_seconds() * sampling_rate)
                 
-                if end_sample > len(speaker_timelines[speaker_id]):
-                    end_sample = len(speaker_timelines[speaker_id])
-                    audio_data = audio_data[:end_sample - start_sample]
+                if len(audio_data) > (end_sample - start_sample):
+                    audio_data = audio_data[:(end_sample - start_sample)]
+                else:
+                    audio_data = np.pad(audio_data, (0, end_sample - start_sample - len(audio_data)))
                 
                 speaker_timelines[speaker_id][start_sample:end_sample] = audio_data
     
