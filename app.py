@@ -33,7 +33,7 @@ def create_tts_interface():
         status = gr.Textbox(label="Status")
         
         def ui_fn(text, model_name, speaking_rate, clone, reference_speaker, model_version, device_choice, vad_select):
-            cleaned_text = clean_thai_text(text)
+            cleaned_text = text#clean_thai_text(text)
             sampling_rate, audio_data = generate_speech(cleaned_text, model_dir, model_name, speaking_rate)
             audio_file = save_audio(sampling_rate, audio_data)
             
@@ -111,6 +111,8 @@ def create_dubbing_interface():
             vad = gr.Checkbox(label="VAD", value=True)
             output_type = gr.Dropdown(["Audio", "Video"], value="Video", label="Output Type")
             clone_checkbox = gr.Checkbox(label="Clone Voice", value=False)
+            original_value = gr.Slider(0.0, 1.0, 0.5, step=0.1, value=0.5,label="Original Volume", interactive=True)
+            dubbing_value = gr.Slider(0.0, 1.0, 1.0, step=0.1, value=1,label="Dubbing Volume", interactive=True)
         
         num_speakers.change(
             lambda x: [gr.Row.update(visible=i < x) for i in range(4)],
@@ -122,7 +124,7 @@ def create_dubbing_interface():
         output_file = gr.File(label="Output")
         status = gr.Textbox(label="Status")
         
-        def ui_fn(srt_file, media_file, num_speakers, model_version, device_choice, vad_select, output_type, clone, *args):
+        def ui_fn(srt_file, media_file, num_speakers, model_version, device_choice, vad_select, output_type, clone, original_value, dubbing_value, *args):
             mid = len(args) // 2
             reference_speakers = args[:mid]
             models = args[mid:]
@@ -143,13 +145,15 @@ def create_dubbing_interface():
                 device_choice, 
                 vad_select, 
                 output_type,
+                original_value,  # Original volume
+                dubbing_value,  # Dubbing volume
                 clone
             )
             return output_file, status
         
         dub_btn.click(
             ui_fn,
-            inputs=[srt_file, media_file, num_speakers, model_version, device, vad, output_type, clone_checkbox, *reference_speakers, *model_inputs],
+            inputs=[srt_file, media_file, num_speakers, model_version, device, vad, output_type, clone_checkbox, original_value, dubbing_value, *reference_speakers, *model_inputs],
             outputs=[output_file, status]
         )
 
