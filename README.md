@@ -61,13 +61,12 @@ python app.py
 ## ตัวอย่าง
 - Text-to-Speech (TTS) กับ การโคลนเสียง
 
-https://github.com/user-attachments/assets/3f6b029f-5e71-412d-9db8-eecbfe207214
+https://github.com/user-attachments/assets/e9199a58-abd3-4a99-89b3-580b606cbb39
 
 
 - พอดแคสต์ 
 
-https://github.com/user-attachments/assets/32260c2c-ed03-477b-b440-5358949d1184
-
+https://github.com/user-attachments/assets/ea840f4e-0b21-45d3-b4f7-e40146a2d70b
 
 
 - วิดีโอ Dubbing 
