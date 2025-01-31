@@ -71,6 +71,14 @@ https://github.com/user-attachments/assets/ea840f4e-0b21-45d3-b4f7-e40146a2d70b
 
 - วิดีโอ Dubbing 
 
+https://github.com/user-attachments/assets/b0840aba-49e1-41c1-978e-baf72905b85a
+
+
+- ตัวอย่างวิดีโอพากย์เสียง
+
+https://github.com/user-attachments/assets/9dee4e63-cc1e-4571-83c1-9dc0a893f074
+
+
 
 
 
