@@ -51,7 +51,7 @@ python app.py
 1. ดาวน์โหลดโมเดลที่ต้องการ
 2. วางไฟล์โมเดลในโฟลเดอร์ `models` ของโปรเจกต์
 
-- หากใช้การโคลนเสียง ดาวน์โหลดโมเดล OpenVoice วางไฟล์โมเดลในโฟลเดอร์ `OPENVOICE_MODELS` ของโปรเจกต์
+- หากใช้การโคลนเสียง ดาวน์โหลดโมเดล [OpenVoice](https://github.com/VYNCX/VachanaTTS/releases/download/OpenVoice/OPENVOICE_MODELS.zip) วางไฟล์โมเดลในโฟลเดอร์ `OPENVOICE_MODELS` ของโปรเจกต์
 ---
 
 ## 4. Finetune โมเดล ด้วย dataset ของตัวเอง
