@@ -7,6 +7,7 @@ import scipy
 from pathlib import Path
 from pythainlp import word_tokenize
 import numpy as np
+from scipy.signal import resample_poly
 
 device = torch.device("cuda" if torch.cuda.is_available() else "cpu")
 output_dir = './outputs'
@@ -49,13 +50,15 @@ def generate_speech(text, model_dir, model_name, speaking_rate=1.0):
     # Move output back to CPU for audio processing
     waveform = outputs.waveform[0].cpu().numpy()
     
+    resampled_audio = resample_poly(waveform, 48000, 16000)  # Assuming the original sampling rate is 22050
+    sampling_rate = 48000
     # Ensure correct sampling rate
-    if hasattr(model.config, 'sampling_rate'):
-        sampling_rate = model.config.sampling_rate
-    else:
-        sampling_rate = 48000
+    #if hasattr(model.config, 'sampling_rate'):
+    #    sampling_rate = model.config.sampling_rate
+    #else:
+    #    sampling_rate = 48000
     
-    return sampling_rate, waveform
+    return sampling_rate, resampled_audio
 
 def save_audio(sampling_rate, audio_data, filename="output_tts.wav"):
     scipy.io.wavfile.write(filename, rate=sampling_rate, data=audio_data)
@@ -80,6 +83,7 @@ def voice_cloning(base_speaker, reference_speaker, model_version, device_choice,
             tgt_se=target_se, 
             output_path=save_path,
         )
-        return save_path, "Voice cloning successful!"
+        return save_path,"Voice cloning successful!"
+    
     except Exception as e:
         return None, f"Error: {str(e)}"
