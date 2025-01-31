@@ -58,3 +58,14 @@ python app.py
 
 [Finetune Colab](https://colab.research.google.com/drive/12qbpHnu7wYiTEoqh6_57_KUjp4gJkx2h?usp=sharing)
 
+## ตัวอย่าง
+- Text-to-Speech (TTS) กับ การโคลนเสียง
+https://github.com/user-attachments/assets/6d4fab8a-2089-4fb4-8687-b83bc1e2e523
+
+- พอดแคสต์ 
+https://github.com/user-attachments/assets/d77782ec-8685-4613-b401-d476169b335a
+
+- วิดีโอ Dubbing 
+
+
+
