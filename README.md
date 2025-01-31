@@ -96,7 +96,8 @@ https://github.com/user-attachments/assets/b0840aba-49e1-41c1-978e-baf72905b85a
 
 - ตัวอย่างวิดีโอพากย์เสียง
 
-https://github.com/user-attachments/assets/3e989892-b963-421f-9136-2e4eaa9b4df5
+https://github.com/user-attachments/assets/075e96e9-835f-4d27-b502-839f66b78817
+
 
 
 
