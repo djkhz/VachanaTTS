@@ -233,7 +233,7 @@ def create_app():
                 create_vc_interface()
             with gr.Tab("Podcast"):
                 create_podcast_interface()
-            with gr.Tab("Dubbing(WIP)"):
+            with gr.Tab("Dubbing"):
                 create_dubbing_interface()
 
     return app
