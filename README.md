@@ -60,7 +60,9 @@ python app.py
 
 ## ตัวอย่าง
 - Text-to-Speech (TTS) กับ การโคลนเสียง
-https://github.com/user-attachments/assets/6d4fab8a-2089-4fb4-8687-b83bc1e2e523
+
+https://github.com/user-attachments/assets/3f6b029f-5e71-412d-9db8-eecbfe207214
+
 
 - พอดแคสต์ 
 https://github.com/user-attachments/assets/d77782ec-8685-4613-b401-d476169b335a
