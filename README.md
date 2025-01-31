@@ -65,9 +65,13 @@ https://github.com/user-attachments/assets/3f6b029f-5e71-412d-9db8-eecbfe207214
 
 
 - พอดแคสต์ 
-https://github.com/user-attachments/assets/d77782ec-8685-4613-b401-d476169b335a
+
+https://github.com/user-attachments/assets/32260c2c-ed03-477b-b440-5358949d1184
+
+
 
 - วิดีโอ Dubbing 
+
 
 
 
