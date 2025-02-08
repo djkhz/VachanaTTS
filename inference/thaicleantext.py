@@ -146,7 +146,7 @@ def clean_thai_text(text):
         return word + word
 
     # Replace "ๆ" with duplicated word
-    text = re.sub(r'(\S+?)ๆ', duplicate_word, text)
+    #text = re.sub(r'(\S+?)ๆ', duplicate_word, text)
 
     # Tokenize the text
     words = word_tokenize(text, keep_whitespace=True)
