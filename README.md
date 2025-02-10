@@ -60,7 +60,7 @@ python app.py
 
 หรือ 
 
-รันไฟล์ `finetune-webui.bat` เพื่อ Finetune โมเดล
+รันไฟล์ `finetune-webui.bat` เพื่อ Finetune โมเดล ด้วย Webui
 
 ## ตัวอย่าง
 - Text-to-Speech (TTS) กับ การโคลนเสียง
