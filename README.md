@@ -56,7 +56,11 @@ python app.py
 
 ## 4. Finetune โมเดล ด้วย dataset ของตัวเอง
 
-[Finetune Colab](https://colab.research.google.com/drive/12qbpHnu7wYiTEoqh6_57_KUjp4gJkx2h?usp=sharing)
+[Finetune ใน Google Colab](https://colab.research.google.com/drive/12qbpHnu7wYiTEoqh6_57_KUjp4gJkx2h?usp=sharing)
+
+หรือ 
+
+รันไฟล์ `finetune-webui.bat` เพื่อ Finetune โมเดล
 
 ## ตัวอย่าง
 - Text-to-Speech (TTS) กับ การโคลนเสียง
