@@ -62,6 +62,26 @@ python app.py
 
 รันไฟล์ `finetune-webui.bat` เพื่อ Finetune โมเดล ด้วย Webui
 
+ตัวอย่างการเตรียม Dataset 
+-รองรับเสียงความยาว 3-15 วินาที ต่อ 1 เสียง
+-แนะนำ ไฟล์เสียง อย่างน้อย 10-20 เสียง ในการ Finetune
+
+**ตัวอย่าง Dataset** 
+```text
+/dataset
+ /TH_MALE
+ - metadata.csv
+ - /audio
+   - /audio1.wav
+```
+ไฟล์ Metadata.csv
+
+```text
+file_name,text
+audio/audio1.wav,สวัสดีครับทุกคน ยินดีที่ได้พบกันอีกครั้ง
+audio/audio2.wav,เธอเคยเห็นนกบินสูงบนฟ้าสีครามไหม
+```
+
 ## ตัวอย่าง
 - Text-to-Speech (TTS) กับ การโคลนเสียง
 
