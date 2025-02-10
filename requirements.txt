@@ -20,3 +20,4 @@ cn2an
 jieba
 gradio
 langid
+datasets
