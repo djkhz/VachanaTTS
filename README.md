@@ -14,7 +14,7 @@ VahanaTTS เป็นระบบ Text-to-Speech (TTS) ที่ใช้โม
 
 ```sh
 git clone https://github.com/VYNCX/VachanaTTS.git
-cd VahanaTTS
+cd VachanaTTS
 ```
 
 3. รันไฟล์ `install.bat` เพื่อติดตั้งโปรแกรม:
