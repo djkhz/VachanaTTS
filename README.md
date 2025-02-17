@@ -15,6 +15,9 @@ VahanaTTS เป็นระบบ Text-to-Speech (TTS) ที่ใช้โม
 ```sh
 git clone https://github.com/VYNCX/VachanaTTS.git
 cd VachanaTTS
+pip install -r requirements.txt
+///GPU Usage
+pip install torch torchvision torchaudio --index-url https://download.pytorch.org/whl/cu118
 ```
 
 3. รันไฟล์ `install.bat` เพื่อติดตั้งโปรแกรม:
@@ -41,6 +44,8 @@ python app.py
 2. ใช้ไฟล์ `run.bat` เพื่อเริ่มโปรแกรม
 
 ---
+
+3. ใช้งานบน [Google Colab](https://colab.research.google.com/drive/1LgHAUJFxNx7ReyQo9FUVJfYmqQ6XPQdk?usp=sharing)
 
 ## 3. ดาวน์โหลดโมเดล
 
