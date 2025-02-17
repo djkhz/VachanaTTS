@@ -21,3 +21,5 @@ jieba
 gradio
 langid
 datasets
+accelerate
+matplotlib
