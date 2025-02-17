@@ -1,4 +1,5 @@
 import gradio as gr
+import argparse
 from inference.tts_with_voiceclone import generate_speech, save_audio, get_model_names, voice_cloning
 from inference.openvoice import voice_cloning as vc_voice_cloning
 from inference.dubbing import dub_srt, get_model_names as get_dubbing_model_names
@@ -235,10 +236,14 @@ def create_app():
                 create_podcast_interface()
             with gr.Tab("Dubbing"):
                 create_dubbing_interface()
-
+    
     return app
 
 if __name__ == "__main__":
+    parser = argparse.ArgumentParser()
+    parser.add_argument("--share", type=bool, default=False, help="Enable Gradio share mode")
+    args = parser.parse_args()
+    
     app = create_app()
     app.queue()
-    app.launch(inbrowser=True)
+    app.launch(inbrowser=True, share=args.share)
