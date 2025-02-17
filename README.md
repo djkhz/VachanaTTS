@@ -123,6 +123,10 @@ https://github.com/user-attachments/assets/b0840aba-49e1-41c1-978e-baf72905b85a
 https://github.com/user-attachments/assets/075e96e9-835f-4d27-b502-839f66b78817
 
 
+## อ้างอิง
+
+https://github.com/ylacombe/finetune-hf-vits
+https://github.com/myshell-ai/OpenVoice
 
 
 
