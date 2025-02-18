@@ -6,10 +6,6 @@ from pythainlp import word_tokenize
 os.environ['PYTHONIOENCODING'] = 'utf-8'
 
 def english_to_thai_fallback(word):
-    """
-    Simple manual fallback to convert English words to Thai phonemes.
-    This is a placeholder and should be replaced with a proper library if needed.
-    """
     mapping = {
         "today": "ทูเด",
         "hello": "เฮลโล",
@@ -82,72 +78,16 @@ def english_to_thai_fallback(word):
         "sad": "แซด",
         "angry": "แองกรี",
         "tired": "ไทร์ด"
-        # Add more mappings as needed
     }
-    # Add mappings for individual English characters
-    character_mapping = {
-        "a": "เอ",
-        "b": "บี",
-        "c": "ซี",
-        "d": "ดี",
-        "e": "อี",
-        "f": "เอฟ",
-        "g": "จี",
-        "h": "เอช",
-        "i": "ไอ",
-        "j": "เจ",
-        "k": "เค",
-        "l": "แอล",
-        "m": "เอ็ม",
-        "n": "เอ็น",
-        "o": "โอ",
-        "p": "พี",
-        "q": "คิว",
-        "r": "อาร์",
-        "s": "เอส",
-        "t": "ที",
-        "u": "ยู",
-        "v": "วี",
-        "w": "ดับเบิลยู",
-        "x": "เอ็กซ์",
-        "y": "วาย",
-        "z": "แซด"
-    }
-    number_mapping = {
-        "0": "ศูนย์",
-        "1": "หนึ่ง",
-        "2": "สอง",
-        "3": "สาม",
-        "4": "สี่",
-        "5": "ห้า",
-        "6": "หก",
-        "7": "เจ็ด",
-        "8": "แปด",
-        "9": "เก้า",
-        "10": "สิบ",
-        "20": "ยี่สิบ",
-        "30": "สามสิบ",
-        "40": "สี่สิบ",
-        "50": "ห้าสิบ",
-        "60": "หกสิบ",
-        "70": "เจ็ดสิบ",
-        "80": "แปดสิบ",
-        "90": "เก้าสิบ",
-        "100": "หนึ่งร้อย"
-    }
-    mapping.update(number_mapping)
-    mapping.update(character_mapping)
     return mapping.get(word.lower(), word)
 
 def clean_thai_text(text):
-    # Function to duplicate words followed by "ๆ"
-    def duplicate_word(match):
-        word = match.group(1)
-        return word + word
+    def replace_mai_ek(match):
+        return match.group(1) + '\u0E4D' + 'า'  # Replace ำ with ํ + า
 
-    # Replace "ๆ" with duplicated word
-    #text = re.sub(r'(\S+?)ๆ', duplicate_word, text)
-
+    # Replace occurrences of ำ with ํา
+    text = re.sub(r'([ก-ฮ])ำ', replace_mai_ek, text)
+    
     # Tokenize the text
     words = word_tokenize(text, keep_whitespace=True)
 
@@ -159,9 +99,7 @@ def clean_thai_text(text):
                 from pythainlp import transliterate  # Import here to handle the library conditionally
                 thai_phoneme = transliterate(word, engine='ipa')
                 cleaned_text.append(thai_phoneme)
-            except Exception as e:
-                #print(f"Error transliterating word '{word}': {e}")
-                # Use fallback for transliteration
+            except Exception:
                 cleaned_text.append(english_to_thai_fallback(word))
         else:
             cleaned_text.append(word)
