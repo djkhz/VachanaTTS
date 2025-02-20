@@ -38,10 +38,13 @@ pip install torch torchvision torchaudio --index-url https://download.pytorch.or
 ```sh
 python app.py
 ```
-
+ภาษาไทย
+```sh
+python app-th.py
+```
 หรือ
 
-2. ใช้ไฟล์ `run.bat` เพื่อเริ่มโปรแกรม
+2. เปิดไฟล์ `app.bat` เพื่อเริ่มโปรแกรม ,ภาษาไทยเปิด `app-th.bat`
 
 ---
 
