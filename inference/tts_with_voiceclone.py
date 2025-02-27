@@ -43,22 +43,24 @@ def generate_speech(text, model_dir, model_name, speaking_rate=1.0):
     
     # Set model parameters
     model.speaking_rate = speaking_rate
-    
+    model.sentence_silence = 0
+    #model.energy = 10
     with torch.no_grad():
         outputs = model(**inputs)
     
     # Move output back to CPU for audio processing
     waveform = outputs.waveform[0].cpu().numpy()
     
-    resampled_audio = resample_poly(waveform, 22050, 16000)  # Assuming the original sampling rate is 22050
-    sampling_rate = 22050
+    #resampled_audio = resample_poly(waveform, 16000, 16000)  # Assuming the original sampling rate is 22050
+    sampling_rate = model.config.sampling_rate
+
     # Ensure correct sampling rate
     #if hasattr(model.config, 'sampling_rate'):
     #    sampling_rate = model.config.sampling_rate
     #else:
-    #    sampling_rate = 22050
+    #    sampling_rate = 48000
     
-    return sampling_rate, resampled_audio
+    return sampling_rate, waveform
 
 def save_audio(sampling_rate, audio_data, filename="output_tts.wav"):
     scipy.io.wavfile.write(filename, rate=sampling_rate, data=audio_data)
