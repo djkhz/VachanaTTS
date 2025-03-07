@@ -5,7 +5,6 @@ from openvoice import se_extractor
 from openvoice.api import ToneColorConverter
 import scipy
 from pathlib import Path
-from pythainlp import word_tokenize
 import numpy as np
 
 device = torch.device("cuda" if torch.cuda.is_available() else "cpu")
@@ -19,10 +18,6 @@ def get_model_names(model_dir):
     model_paths = Path(model_dir).glob('*')
     return [model_path.name for model_path in model_paths if model_path.is_dir()]
 
-def preprocess_thai_string(input_string: str):
-    string_token = word_tokenize(input_string)
-    return ''.join(string_token)
-
 def load_vits_model(model_name, model_dir):
     if model_name not in models:
         model_path = os.path.join(model_dir, model_name)
@@ -32,7 +27,7 @@ def load_vits_model(model_name, model_dir):
 
 def generate_speech(text, model_dir, model_name, speaking_rate=1.0):
     model, tokenizer = load_vits_model(model_name, model_dir)
-    processed_string = preprocess_thai_string(text)
+    processed_string = (text)
     inputs = tokenizer(processed_string, return_tensors="pt")
     
     # Move inputs to device
